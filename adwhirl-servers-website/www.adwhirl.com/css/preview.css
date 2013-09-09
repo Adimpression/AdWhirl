@@ -1,0 +1,89 @@
+
+/* iPhone Ad Preview Section */
+
+#iphone_preview {
+  width:400px;
+}
+#iphone_preview_top {
+  background: url(/img/create_iphone_ad/phone_top.jpg) no-repeat;
+  height: 100px;
+}
+#iphone_preview_content {
+  background: url(/img/create_iphone_ad/phone_mid.gif) repeat-y;
+  padding-left:30px;
+  height:120px;
+}
+#iphone_preview_bottom {
+  background: url(/img/create_iphone_ad/phone_bottom.gif) no-repeat;
+  height: 100px;
+}
+#iphone_preview_ad {
+  float:left;
+  height:48px;
+  width:321px;
+  background: url(/img/blend_short.png) repeat-x;
+  background-color:#000;
+}
+
+
+#iphone_preview_ad p, #iphone_preview_ad_search p {
+
+  font-family: Helvetica;
+  font-weight:bold;
+  font-size: 13px;
+  width:320px;
+  color:#FFF;
+  margin-top:0;
+}
+
+
+/* Android Ad Preview Section */
+
+
+div#android_preview_top {
+  background: url(/img/create_android_ad/android_top.png) no-repeat;
+  height: 126px;
+}
+div#android_preview_content {
+  background: url(/img/create_android_ad/android_mid.png) no-repeat;
+  padding-left:30px;
+  height:134px;
+}
+div#android_inapp .banner_preview {
+  padding: 0px !important;
+}
+div#android_inapp .banner_preview div {
+  margin-left: 29px;
+  width: 320px;
+  height: 48px;
+}
+
+div#android_preview_content p.ad_text {
+  text-align:left;
+  color:#FFF;
+  font-family: Helvetica;
+  font-weight:bold;
+  font-size: 13px;
+  margin-top:0px;
+  width: 320px
+}
+.left_image {
+  float:left;
+  padding: 5px 20px 5px 5px
+}
+
+.banner_image {
+  float:left;
+  padding: 0px	
+}
+.right_image {
+  float:right;
+  padding: 5px
+}
+p.ad_text {
+  padding:15px
+  
+}
+
+
+

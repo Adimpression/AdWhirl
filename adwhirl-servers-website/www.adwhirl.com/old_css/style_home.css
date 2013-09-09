@@ -1,0 +1,149 @@
+/*
+ -----------------------------------------------------------------------
+Copyright 2009 AdMob, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+------------------------------------------------------------------------
+*/
+/* CSS Document */
+body{margin:0; padding:0; background:; 0 0 repeat-x #fff; color:#666;}
+div, p, ul, h1, h2, h3, h4, form{margin:0px; padding:0px;}
+ul{list-style-type:none;}
+
+a img{
+border:none;
+}
+a {
+	text-decoration:none;
+	color:#06c;
+}
+a:hover {
+	text-decoration:underline;
+}
+
+/*--Login Info--*/
+#loginInfo{position:absolute; top:0px; right:35px; display:block; float:right; padding:0;}
+
+div.errorMsg {
+width: 200px;
+margin-left: auto; margin-right: auto; background:#ffcccc;
+border: thin solid #990000;
+text-align: center;
+color: #990000;
+}
+
+/*--New Name--*/
+#newName{position:absolute; top:54px; right:455px; display:block; float:right; padding:0;}
+
+#logoSet1{width:170px; height:64px; position:absolute; top:287px; left:175px; display:block;}
+#logoSet2{width:170px; height:64px; position:absolute; top:287px; left:375px; display:block;}
+#logoSet3{width:170px; height:64px; position:absolute; top:287px; left:573px; display:block;}
+
+/*--Top Panel--*/
+#topPan{width:960px; height:374px; position:relative; margin:0 auto; padding:0;}
+#topPan h1{z-index: -1; width:424px; height:215px; position:absolute; top:83px; left:0px; display:block; background:url(../img/adwhirl_header.png) 0 0 no-repeat #FEFFFE; font:24px/18px "Trebuchet MS",Arial, Helvetica, sans-serif; color:#fff; padding:65px 86px 0 450px; font-weight:normal;}
+#topPan h1 span{font-size:14px;}
+
+#topPan img.bg{width:265px; height:39px; display:block; position:absolute; top:39px; left:0px;}
+
+#topPan ul {
+    position: absolute;
+    top: 3.3em;
+    right: 0;
+    background-color: #6CF;
+}
+#topPan li {
+    float: left;
+    display: block;
+    padding: 0 1em;
+}
+#topPan li a {
+    display:block;
+    text-decoration:none;
+    text-align:center;
+    font: bold 13px/27px Arial, Helvetica, sans-serif;
+    color: #FFF;
+}
+#topPan li a:hover{background:url(../images/bullet1.gif) 50% 0 no-repeat #66ccff; color:#fff; text-decoration:none;}
+#topPan li.company{background:url(../images/bullet1.gif) 50% 0 no-repeat #66ccff; color:#fff; text-decoration:none; font:13px/27px Arial, Helvetica, sans-serif; font-weight:bold; text-align:center;}
+/*--/Top Panel--*/
+
+
+/*--right panel--*/
+#lowerrightPan{width:606px; float:left;}
+
+#lowerrightPan p.online{width:606px; height:91px; margin:18px 0 23px;}
+#lowerrightPan p.online a{width:606px; height:91px; display:block; background:url(../images/sdk_setup.gif) 0 0 no-repeat #EFEFEF; color:#fff; font:18px/20px Arial, Helvetica, sans-serif; font-weight:bold; text-decoration:none; padding:22px 0 0 44px;}
+#lowerrightPan p.online a:hover{text-decoration:none;}
+/*--/right panel--*/
+/*--/Lower Panel--*/
+
+/*--Middle Panel--*/
+#mainmiddlePan{height:240px; background:#F0F0F0; color:#666; padding:17px 0 0;}
+#middlePan{width:960px; position:relative; margin:0 auto;}
+
+/*--left panel--*/
+#middleleftPan{width:643px; height: 190px; float:left; border: thin solid #AAAAAA; margin-right: 10px; padding: 15px; background: 500px 85px no-repeat #ffffff;}
+#middleleftPan ul{list-style-type: disc; padding-left: 15px;}
+#middleleftPan li{margin-top: 20px;}
+#middleleftPan .title{color:#D67200; font:22px Arial, Helvetica, sans-serif; margin-bottom: 10px; font-weight: bold;}
+#middleleftPan .title_bullet{color:#D67200; font:18px Arial, Helvetica, sans-serif; margin-bottom: 10px; font-weight: bold;}
+#middleleftPan img{position: absolute; left: 400px;}
+
+/*--right panel--*/
+#middlerightPan{width:253px; height: 200px; float:left; border: thin solid #AAAAAA; background: #ffffff; padding: 10px;}
+#middlerightPan h2{color:#D67200; font:22px Arial, Helvetica, sans-serif; margin-bottom: 10px;}
+
+#middlerightPan form{background:#ffffff; color:#3B3B3B;}
+#middlerightPan form input{width:205px; margin:5px 0 10px 18px; }
+#middlerightPan form label{width:205px; margin:0 0 0 18px; font-weight:bold; }
+#middlerightPan form input.button{width:58px; height:24px; background:url(../img/login.jpg) 0 0 no-repeat #FEFEFE; color:#fff; border:none; font:14px/18px Georgia, "Times New Roman", Times, serif; font-weight:bold; }
+
+#middlerightPan form #register{font: 12px serif; margin-left: 20px;}
+#middlerightPan form #register a{font: 12px serif; font-weight:bold; }
+
+/*--/right panel--*/
+/*--/Middle Panel--*/
+
+/*---FOOTER PANEL--*/
+#footermainPan{height:36px; background:#fff; color:#fff; margin:0; padding:0; clear:both;}
+#footerPan{width:960px; position:relative; margin:0 auto;}
+#footerPan img{width:248px; height:28px; position:absolute; top:23px; right:6px;}
+
+#footerPan ul{width:500px; position:absolute; top:12px; left:49px;}
+#footerPan li{float:left; font:12px/15px "Trebuchet MS",Arial, Helvetica, sans-serif; font-weight:normal;}
+#footerPan ul li a{padding:0 0 0 12px; color:#777777; background:#fff; text-decoration:none;}
+#footerPan ul li a:hover{text-decoration:underline;}
+
+#footerPan ul.templateworld{width:158px; background:#7D7D7D; color:#fff; display:block; position:absolute; top:120px; left:61px;}
+#footerPan ul.templateworld li a{background:#7D7D7D; display:block; color:#fff; text-decoration:none;}
+#footerPan ul.templateworld li a:hover{text-decoration:underline;}
+
+#start_button {
+}
+
+.dl_button_home {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:transparent url(../img/button.png) no-repeat scroll 0 -30px;
+color:white;
+display:block;
+font-size:14px;
+font-weight:bold;
+line-height:48px;
+position:relative;
+text-align:center;
+text-decoration:none;
+width:203px;
+}

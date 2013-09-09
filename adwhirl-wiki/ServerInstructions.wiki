@@ -1,0 +1,15 @@
+#summary Instructions to get the open source AdWhirl server up and running.
+
+= Introduction =
+
+Getting the server up and running isn't the most difficult task, but it definitely isn't trivial either.
+
+= Details =
+
+Before you do any of this, make sure you have an Amazon Web Services (AWS) account. Your two options for instructions:
+  * The prettier, although less frequently updated, [http://adwhirl.com/pdf/AdWhirl_OpenSourceServer_Setup_Instructions.pdf PDF]
+  * The up-to-date and accurate text README in the [http://code.google.com/p/adwhirl/source/browse/README?repo=servers-mobile repository]
+
+The instructions refer to a prebuilt AMI. The details for the latest version are below:
+  * AMI ID: ami-ca54bea3
+  * Manifest: adwhirl-ami/image.manifest.xml

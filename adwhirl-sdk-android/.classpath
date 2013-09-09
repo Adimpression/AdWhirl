@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry exported="true" kind="lib" path="libs/qwandroidsdk.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/MMAdView.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/zestadz_android_sdkv1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/mdotm-sdk-android.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/OneRiotLib.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/NexageLite1.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/GoogleAdView.jar"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="lib" path="libs/InMobiAndroidSDK_a350.jar"/>
+	<classpathentry kind="lib" path="libs/GoogleAdMobAdsSdk-6.0.1.jar"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

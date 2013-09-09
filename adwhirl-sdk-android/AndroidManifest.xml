@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.adwhirl"
+          android:versionCode="1"
+          android:versionName="1.0">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
+        <activity android:name=".Invoker"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Activity-specific AdWhirl Key -->
+            <!-- If both Activity-specific and App-wide AdWhirl Keys are specified, the
+                 Activity-specific key will override the App-wide key. -->
+            <!-- If Activity-specific key is omitted, the App-wide key will be used. -->
+            <!-- <meta-data android:value="46a9e26bb1f5499ab7b00c9807ae034b" android:name="ADWHIRL_KEY" /> -->
+        </activity>
+        <!-- AdMob integration -->
+        <activity android:name="com.google.ads.AdActivity"
+                  android:configChanges="orientation|keyboard|keyboardHidden|screenLayout|uiMode|screenSize|smallestScreenSize" />
+        <!-- MdotM integration -->
+        <activity android:name="com.mdotm.android.ads.MdotmLandingPage"
+                  android:label="@string/app_name" >
+            <intent-filter>
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <!-- Millennial integration -->
+        <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity"
+                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                  android:configChanges="orientation|keyboard|keyboardHidden" />
+        <activity android:name="com.millennialmedia.android.VideoPlayer"
+                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+                  android:configChanges="keyboardHidden|orientation|keyboard" />
+        <!-- InMobi integration -->
+        <activity android:name="com.inmobi.androidsdk.IMBrowserActivity"
+                  android:configChanges="keyboardHidden|orientation|keyboard" />
+        <!-- Application-wide AdWhirl Key -->
+        <!-- If both Activity-specific and App-wide AdWhirl Keys are specified, the
+             Activity-specific key will override the App-wide key. -->
+        <!-- If Activity-specific key is omitted, the App-wide key will be used. -->
+        <meta-data android:value="643eb700781e4f47b017ea27d1aba3be" android:name="ADWHIRL_KEY" />
+    </application>
+    <uses-sdk android:minSdkVersion="3" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+</manifest>

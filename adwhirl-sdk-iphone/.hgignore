@@ -1,0 +1,18 @@
+# DO NOT COMMIT ANY AD NETWORK LIBRARIES TO GOOGLE CODE
+syntax: glob
+
+# Emacs temp files
+\#*
+*~
+
+# Mac BS
+.DS_Store
+**/.DS_Store
+
+# Libraries
+iphone/AdNetworkLibs/*
+
+# iPhone
+iphone/**/build
+iphone/**/*.xcodeproj/*.pbxuser
+iphone/**/*.xcodeproj/*.mode1v3

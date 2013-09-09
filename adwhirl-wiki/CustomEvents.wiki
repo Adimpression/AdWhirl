@@ -1,0 +1,70 @@
+#summary Using Custom Events
+
+= Introduction =
+
+Custom Events are a great way to incorporate ad networks that AdWhirl does not explicitly support. You can also use Custom Events to trigger any code. You assign a certain portion of your traffic to Custom Events just like you may do for other ad networks. You can see this as a more generalized version of [wiki:GenericNotifications Generic Notifications].
+
+= How It Works =
+
+You give a Custom Event a name and a function name. You will then implement the function/method in the delegate object in your client code. When the Custom Event is chosen in the client code, the function/method is then called. You can perform anything in your function. That includes making calls to other ad networks or replacing the AdWhirl banner content with anything.
+
+= Creating Custom Events =
+
+On adwhirl.com , in the Ad Network Settings page of your App, click on the "+ Add Custom Events" button. You enter a name and the function name for the Custom Events, for example "My Event", "performEvent" . Click Add Event. Your event will then be added to the list of Networks. You can now turn it on and assign a percentage of your traffic to it.
+
+= Handling Custom Events =
+
+== iPhone ==
+
+Implement the method that you've specified when you created the Custom Event in your AdWhirlDelegate. You may implement the method with no parameter or with one AdWhirlView parameter. For example,
+
+{{{
+- (void)performEvent {
+  // Make fetch ads from some ad networks.
+}
+}}}
+
+or
+
+{{{
+- (void)performEvent:(AdWhirlView *)adWhirlView {
+  // replace banner content
+  UILabel *replacement = [[UILabel alloc] initWithFrame:kAdWhirlViewDefaultFrame];
+  replacement.backgroundColor = [UIColor blackColor];
+  replacement.textColor = [UIColor whiteColor];
+  replacement.textAlignment = UITextAlignmentCenter;
+  replacement.text = [NSString stringWithFormat:@"Event performed, view %x", adWhirlView];
+  [adWhirlView replaceBannerViewWith:replacement];
+  [replacement release];
+}
+}}}
+
+If you implemented both, the method with the AdWhirlView parameter will be called. 
+
+== Android ==
+
+Implement the method that you've specified when you created the Custom Event in your listener class. You must implement the method with no parameters. You must also tell the !AdWhirlLayout to use your listener class.
+
+There is an example of this code in [http://code.google.com/p/adwhirl/source/browse/android/src/com/adwhirl/Invoker.java?repo=sdk /android/src/com/adwhirl/Invoker.java]
+
+To set the listener class (in this example I use the activity that creates the !AdWhirlLayout):
+{{{
+        adWhirlLayout.setAdWhirlInterface(this);
+}}}
+ 
+Example custom event function in listener class:
+{{{
+	public void adWhirlEventInterstitial() { /* Functional code */}
+}}}
+
+You should also add rotation/rollover code to your custom event code:
+{{{
+	//  In your custom event code, you'll want to call some of the below methods.
+	//
+	//  On success:
+	//  this.adWhirlLayout.adWhirlManager.resetRollover();
+	//  this.adWhirlLayout.rotateThreadedDelayed();
+	//
+	//  On failure:
+	//  this.adWhirlLayout.rolloverThreaded();
+}}}

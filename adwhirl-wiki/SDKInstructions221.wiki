@@ -1,0 +1,4 @@
+#summary Integrating the AdWhirl SDK for your iPhone SDK 2.2.1 application
+#labels Deprecated
+
+See http://www.adwhirl.com/home/dev for the latest instructions.

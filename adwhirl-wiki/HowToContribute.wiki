@@ -1,0 +1,13 @@
+#summary How to Contribute
+
+We welcome contributions! To contribute, please follow these steps:
+
+ * Determine the code you want to change. AdWhirl has several components:
+  * [http://code.google.com/p/adwhirl/source/createClone?repo=sdk-android Android SDK]
+  * [http://code.google.com/p/adwhirl/source/createClone?repo=sdk-iphone iPhone SDK]
+  * [http://code.google.com/p/adwhirl/source/createClone?repo=server-website Web frontend]
+  * [http://code.google.com/p/adwhirl/source/createClone?repo=server-mobile Backend server]
+  * [http://code.google.com/p/adwhirl/source/createClone?repo=server-backup Backup server]
+ * Create a server-side clone of the component you want to work on, by going to the [http://code.google.com/p/adwhirl/source/clones Source tab -> Clones] and select the repository of the component you want to work on.
+ * Write your code and tests.
+ * Request a code review by [http://code.google.com/p/adwhirl/issues/entry?show=review&former=sourcelist filing an Issue] . Note the name of your server-side clone so we can find it.

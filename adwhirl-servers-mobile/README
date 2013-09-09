@@ -1,0 +1,132 @@
+-----------------------------------------------------------------------
+Copyright 2009-2010 AdMob, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+------------------------------------------------------------------------
+
+This is AdWhirl Mobile Server v2.3.0.
+
+You will need an Amazon AWS account to run this.
+
+Running an AMI is not entirely too difficult, but is also not the most trivial task. You should probably read this guide through before executing any of the steps.
+
+If you aren't familiar with AWS, you might want to refer to Amazon's Getting Started Guide (http://docs.amazonwebservices.com/AmazonEC2/gsg/2006-10-01/).
+
+Build/Deploy Steps:
+These steps assume you already have the EC2 tools set up. If not, follow the steps in Amazon's guide (http://docs.amazonwebservices.com/AmazonEC2/gsg/2006-10-01/setting-up-your-tools.html).
+
+The steps also assume that you're using some *nix-based system. If not, you'll probably need to change the commands slightly to match the syntax appropriate for your OS.
+
+Get the AMI ID of the latest version from the Google Code project site (http://code.google.com/p/adwhirl/).
+
+Generate a key pair, so you can log in to the AMI.
+`ec2-add-keypair adwhirl-keypair`
+Save the key to file, including the --BEGIN-- and --END-- lines.
+
+NOTE: After you start an instance with the next command, Amazon will start billing you.
+
+Run an instance of the latest AdWhirl AMI.
+`ec2-run-instances <ami-XXXXXXXX> -k adwhirl-keypair`
+
+You can now check on the status of your instance. This will also give you the instance's DNS name.
+`ec2-describe-instances <i-YYYYYYYY>`
+
+You'll need to authorize SSH and HTTP traffic for the instance. Port 8080 is needed for the configuration website.
+`ec2-authorize default -p 22`
+`ec2-authorize default -p 80`
+`ec2-authorize default -p 8080`
+
+Login to the instance as the root user.
+`ssh -i <keyfile> root@domU-AA-AA-AA-AA-AA-AA.ZZZZ.compute.amazonaws.com`
+
+You should now be logged in, and can start editing the stock AdWhirl AMI.
+
+NOTE: I highly suggest that you run GNU Screen and work inside it, although it is entirely optional. 
+
+At this point you should take a break from the server and set up the configuration website.
+`cd ~/adwhirl-servers-website`
+Follow the instructions in the website README, and then come back here when you've finished.
+
+Now that you've finished with the website, move into the server directory so we can make some edits.
+`cd ~/adwhirl-servers-mobile`
+
+You'll need to change the utility class and change the server location, include your AWS keys, and any other specific configuration you desire.
+Emacs, vim, nano, ed, etc. are all installed on the instance; feel free to use your editor of choice.
+`emacs src/util/AdWhirlUtil.java`
+
+Build the new distribution, cleaning first to be safe.
+`ant clean`
+`ant dist`
+
+You'll need to make the logs directory.
+`mkdir /mnt/adwhirl`
+
+Now you will have a jar that you can start the services. Start it up. It you plan on serving a lot of traffic, you might want a larger heap size.
+`java -Xmx512m -cp dist/adwhirl.jar Invoker`
+
+The adwhirl server stores partial aggregate stats in a tempory table in SDB. You'll need to run the stats daemon to consolidate them.
+`java -cp dist/adwhirl.jar Daemon`
+
+And you're up and running!
+
+That's not all though :-). If you want to save any changes to the current instance, you'll need to re-bundle it.
+
+First off, you'll want to kill any running services or processes that aren't vital to the machine.
+`killall -9 java`
+`service httpd stop`
+`service memcached stop`
+`service postfix stop`
+
+Now, from your local machine, you'll need to copy your private key and X.509 certificate to the instance. 
+`scp -i <keyfile> pk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.pem cert-YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY.pem root@domU-AA-AA-AA-AA-AA-AA.ZZZZ.compute.amazonaws.com:`
+
+If you've made all your changes then you're ready to create a new image containing them. Replace ZZZZZZZZZZZZ with your AWS Account ID (not your AWS key).
+`ec2-bundle-vol -d /mnt -k ~/pk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.pem -c ~/cert-YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY.pem -u ZZZZZZZZZZZZ`
+
+Check that everything is finished and you now have an AMI manifest.
+`ls -l /mnt/image.*`
+
+Upload it to S3.
+`ec2-upload-bundle -b <your-s3-bucket> -m /mnt/image.manifest.xml -a <aws-access-key-id> -s <aws-secret-access-key>`
+
+From your local machine, register the AMI.
+`ec2-register <your-s3-bucket>/image.manifest.xml`
+
+Now you can spin up instances of your new AMI!
+
+You don't need to go any further, but if you want to set up elastic load balancing, read on!
+
+The first thing is to get the Elastic Load Balancer tools (from http://developer.amazonwebservices.com/connect/entry.jspa?externalID=2536&categoryID=88).
+
+Amazon's guide for the tools is available as well (http://docs.amazonwebservices.com/ElasticLoadBalancing/2009-05-15/DeveloperGuide/).
+
+Now create a new load balancer. Make sure your availability zones are the same as the zones your instances are in. The server runs on port 80, and the configuration website on 8080.
+`elb-create-lb  AdWhirlLB --headers --listener "lb-port=80,instance-port=80,protocol=HTTP" --listener "lb-port=8080,instance-port=8080,protocol=HTTP" --availability-zones us-east-1a`
+
+The previous command will return the DNS name of your load balancer. You'll probably want to add this as a target to a CNAME entry somewhere in your DNS record.
+
+Add a health checker, to make sure that your instances are up and running correctly. Feel free to change the timeouts.
+`elb-configure-healthcheck AdWhirlLB  --headers --target "HTTP:80/ping" --interval 30 --timeout 3 --unhealthy-threshold 2 --healthy-threshold 2`
+
+Register your instance(s) with the load balancer.
+`elb-register-instances-with-lb  AdWhirlLB  --headers --instances i-XXXXXXXX,i-YYYYYYYY`
+
+If everything went well, traffic going to the load balancer should now be automatically split between your running instances.
+
+At some point you will want to terminate the instance and stop being billed.
+`ec2-terminate-instances <i-YYYYYYYY>` 
+
+Alternatively, if you are already on the AMI, you can just shut it down.
+`shutdown -h now`
+
+And that's it! Cheers!

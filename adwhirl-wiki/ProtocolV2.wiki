@@ -1,0 +1,169 @@
+#summary Client/Server Protocol v2
+
+<wiki:toc/>
+
+= !AdWhirl Client/Server Protocol v2 =
+
+This document describes the !AdWhirl client/server protocol v2. All communication is over HTTP, and all responses from the server are in JSON, so it is easy to implement a client for your platform of choice.
+
+If you run your own !AdWhirl server instance, substitute `*`.adwhirl.com hostnames below with your hostname.
+
+== Common Fields ==
+
+Some fields that are used throughout the different requests.
+  * appver: The client version as an integer
+  * client: The client platform
+   * 1: iPhone
+   * 2: Android
+   * 3: Web
+   * 4: Blackberry
+  * appid: The !AdWhirl SDK Key for the application
+  * nid: The unique identifier for an application's ad network
+  * type: The type value of the particular network. See below
+  * uuid: The device's uuid. The client hashes the value to address privacy concerns
+  * country_code: The locale (language and region) of the device
+
+== Ad Network Types ==
+
+Each ad network has a type value and a prefix. If you wish to include an additional network, please check with us first so we can give you an unused value.
+  * 1: !AdMob, "admob"
+  * 2: !JumpTap, "jumptap"
+  * 3: !VideoEgg, "videoegg"
+  * 4: _Reserved_
+  * 5: _Reserved_
+  * 6: Millenial Media, "millenial"
+  * 7: _Reserved_
+  * 8: Quattro Wireless, "quattro"
+  * 9: _Custom Ad_, "custom"
+  * 10: _Reserved_
+  * 11: !MobClix, "mobclix"
+  * 12: MdotM, "adwhirl_12"
+  * 13: _Reserved_
+  * 14: Google !AdSense, "google_adsense"
+  * 15: _Reserved_
+  * 16: _Generic Notification_, "generic"
+  * 17: _Reserved_
+  * 18: !InMobi, "inmobi"
+  * 19: iAd, "iad"
+  * 20: ZestADZ, "zestadz"
+
+==Configuration Request==
+
+Upon initialization, application asks server for configuration information.
+  * Endpoint: http://mob.adwhirl.com/getInfo.php
+  * Client->Server: appver, appid, client
+  * Server->Client: settings ("extra"), ration list ("rations")
+
+Response Fields:
+  * *extra*:
+   * *location_on*: Whether or not the device should send a location
+   * *colors*: RGB are integers with range 0-255, alpha is a float with range 0.0 (transparent) -1.0 (solid)
+   * *cycle_time*: Time between ad requests in milliseconds
+   * *transition*: (these may not all be supported by your platform)
+    * 0: none
+    * 1: flip from left
+    * 2: flip from right
+    * 3: curl up
+    * 4: curl down
+    * 5: slide from left
+    * 6: slide from right
+    * 7: fade in
+    * 8: modal
+    * 9: random
+  * *rations*:
+   * *nid*: The unique identifier for an application's ad network
+   * *nname*: The network prefix (listed above)
+   * *type*: The network type (listed above)
+   * *weight*: The allocation percent
+    * (sum of weights should be 100)
+    * (this is actually a decimal field, not an integer. You can get a decimal number by configuring custom ads)
+   * *priority*: Rollover priority
+   * *key*: Any key associated with the network
+
+*Example Request*
+
+Sent from the iPhone SDK, version 2.0.0
+{{{
+http://mob.adwhirl.com/getInfo?appid=35819838213a49a990e1050dd32d940d&appver=200&client=1
+}}}
+
+*Example Response*
+
+{{{
+{
+  "extra":{"location_on":0,"background_color_rgb":{"red":255,"green":255,"blue":255,"alpha":1},"text_color_rgb":{"red":0,"green":0,"blue":0,"alpha":1},"cycle_time":30000,"transition":8},
+  "rations":[{"nid":"f90c2559167b4225aa5fff0e9a013cbb","nname":"admob","type":1,"weight":80,"priority":1,"key":"a213789152"},
+             {"nid":"e636a224704947b6b34cd17299f0047e","nname":"custom","type":9,"weight":20,"priority":2,"key":"__CUSTOM__"}]
+}
+}}}
+
+
+==Custom Ad Request==
+
+Clients send the following request to serve an !AdWhirl custom ad. Location and location_timestamp are optional. 
+
+  * Endpoint: http://cus.adwhirl.com/custom.php
+  * Client->Server: appid, nid, uuid, country_code, location, location_timestamp, appver, client
+  * Server->Client: img_url, redirect_url, metrics_url, ad_type, ad_text, launch_type, webview_animation_type
+
+Response fields:
+  * img_url : Image URL
+  * redirect_url : Click URL
+  * metrics_url : Click ping URL
+  * ad_type :
+   * 1: banner
+   * 2: text (icon + text)
+   * 3: auto launch fallback banner
+   * 4: auto launch fallback text
+   * 5: search bar
+  * ad_text : ad text
+  * launch_type :
+   * 1: Browser -- i.e. for iPhone use `[[UIApplication sharedApplication] openURL:]`
+   * 2: Canvas -- internal web view
+   * 3: Safari Redirect Follow Through
+  * webview_animation_type: (these may not all be supported by your platform)
+   * 0: none
+   * 1: flip from left
+   * 2: flip from right
+   * 3: curl up
+   * 4: curl down
+   * 5: slide from left
+   * 6: slide from right
+   * 7: fade in
+   * 8: modal
+   * 9: random
+
+*Example Request*
+
+{{{
+http://cus.adwhirl.com/custom.php?appid=35819838213a49a990e1050dd32d940d&nid=20e05c8704e0102d96dc5b26aef5c1e9&uuid=00000000000000000000000000000000&country_code=en_US&location=11.325432,-42.787399&location_timestamp=1265154619.172145&appver=200&client=1
+}}}
+
+
+*Example Response*
+{{{
+{
+  "img_url":"http:\/\/s3.amazonaws.com\/adrollo-custom-images\/f2efe20429570a780d4581c9ad35417a.jpg",
+  "redirect_url":"http:\/\/www.yourlinkhere.com",
+  "metrics_url":"http:\/\/www.adwhirl.com\/exclick.php?nid=20e05c8704e0102d96dc5b26aef5c1e9&uuid=00000000000000000000000000000000&country_code=en_US&appver=200",
+  "ad_type":"1",
+  "ad_text":"",
+  "launch_type":1,
+  "webview_animation_type":4
+}
+}}}
+
+==Metrics Notification==
+
+A metrics request should be sent after each impression and click.
+  * Endpoint: 
+   * Impressions: http://met.adwhirl.com/exmet.php
+   * Clicks: http://met.adwhirl.com/exclick.php
+  * Client->Server: appid, nid, type, uuid, country_code, appver, client
+  * Server->Client: HTTP Status 200 (no content)
+
+*Example Request*
+
+{{{
+http://met.adwhirl.com/exmet.php?appid=35819838213a49a990e1050dd32d940d&nid=f90c2559167b4225aa5fff0e9a013cbb&type=1&uuid=00000000000000000000000000000000&country_code=en_US&appver=200&client=1
+}}}

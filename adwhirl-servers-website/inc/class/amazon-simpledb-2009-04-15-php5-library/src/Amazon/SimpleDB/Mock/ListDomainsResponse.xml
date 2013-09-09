@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListDomainsResponse xmlns="http://sdb.amazonaws.com/doc/2009-04-15/">
+  <ListDomainsResult>
+    <!--Zero or more repetitions:-->
+    <DomainName>string</DomainName>
+    <!--Optional:-->
+    <NextToken>string</NextToken>
+  </ListDomainsResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+    <BoxUsage>string</BoxUsage>
+  </ResponseMetadata>
+</ListDomainsResponse>

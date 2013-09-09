@@ -1,0 +1,44 @@
+#summary Using Generic Notifications
+
+= Introduction =
+
+The Generic Notification mechanism in the AdWhirl SDK is for you to apply your own client-side logic dynamically. With Generic Notifications, you can now use AdWhirl to dynamically allocate traffic to a section of your code to do anything: showing an alert, unlocking new app features, or simply making ad calls to an ad network library that AdWhirl has yet to integrate.
+
+For instance, upon receiving the Generic Notification callback, you can make an ad request call directly to the Google SDK, Greystripe SDK, or another ad network's SDK. Then, when the ad request completes successfully, you can ask the AdWhirlView to display the ad view you have gotten from the ad network SDK.
+
+Note that if you would like to add a new ad network, we suggest that you implement it the right way as described in AddNewAdNetwork .
+
+= Details =
+
+To enable Generic Notification, allocate some traffic to it in the configuration UI:
+
+[http://adrollo-images.s3.amazonaws.com/instructions/generic_traffic.gif]
+
+When the AdWhirlView picks Generic Notification (as opposed to making an ad request), it will send you the Generic Notification callback. In the method, you can perform your task, e.g. perform and ad request, or display a message. The following code snippet displays a simple view with a red background and white text that says "Generic Notification".
+
+{{{
+- (void)adWhirlReceivedRequestForDeveloperToFufill:(AdWhirlView *)adWhirlView {
+  UILabel *replacement = [[UILabel alloc] initWithFrame:kAdWhirlViewDefaultFrame];
+  replacement.backgroundColor = [UIColor redColor];
+  replacement.textColor = [UIColor whiteColor];
+  replacement.textAlignment = UITextAlignmentCenter;
+  replacement.text = @"Generic Notification";
+  [adWhirlView replaceBannerViewWith:replacement]; // note
+  [replacement release];
+}
+}}}
+
+Note the call to `[adWhirlView replaceBAnnerViewWith:]` . Instead of removing the adWhirlView from its parent, you keep it in place and put your view into the adWhirlView.
+
+If your ad request fails, or for some reason you cannot display anything to the user, you can ask the AdWhirlView to perform a rollover so that it can fetch an ad from the next ad network in the queue.
+
+{{{
+  [adWhirlView rollOver];
+}}}
+
+Also, if you prefer to do so, you may turn off the auto refresh timer with two new helper methods to ignore and resume AdWhirl ad refreshes:
+
+{{{
+-(void)ignoreAutoRefreshTimer;
+-(void)doNotIgnoreAutoRefreshTimer;
+}}}

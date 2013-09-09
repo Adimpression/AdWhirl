@@ -1,0 +1,46 @@
+-----------------------------------------------------------------------
+Copyright 2010 AdMob, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+------------------------------------------------------------------------
+
+This document assumes that your working directory is the root of the website. It also assuming that you're running this on the AdWhirl AMI.
+
+If you didn't come here from setting up the server, you should take a look at ~/adwhirl-servers-mobile/README first.
+
+I have marked areas in the website code that you will need to change with "CHANGEME". 
+
+At a minimum, you will need to change:
+   AWS keys for SimpleDB
+   AWS keys for S3
+   S3 bucket name(s)
+
+You can easily find these using grep.
+`grep -r "CHANGEME" *`
+
+You will need to allow access to the temporary images folder, and the smart templates folder, if they aren't isn't already configured.
+`chmod 777 www.adwhirl.com/imagesTemp`
+`chmod 777 inc/smarty/templates_c`
+
+Ensure the web server can find the files.
+`mkdir /var/www/html`
+`mount --bind /root/adwhirl-servers-website /var/www/html`
+
+Make sure the webserver is running with the current configuration.
+`/etc/init.d/httpd restart`
+
+If you wish to use the charting functionality of the website, you will need to download FusionCharts (http://www.fusioncharts.com/), and copy the .swf files into the FusionCharts directory. They can not be included in the source code of this project due to license restrictions.
+
+So go to http://<your-instance's-public-hostname>:8080/, and you should see your very own hosted configuration website!
+
+Cheers!

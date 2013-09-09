@@ -1,0 +1,17 @@
+Options +FollowSymLinks
+Options +MultiViews
+
+#DirectoryIndex index.php index.html
+
+RewriteEngine On
+RewriteRule ^(getInfo.php*) http://mob.adwhirl.com/$1 [R,L]
+RewriteRule ^(custom.php*) http://cus.adwhirl.com/$1 [R,L]
+RewriteRule ^(exmet.php*) http://met.adwhirl.com/$1 [R,L]
+RewriteRule ^(exclick.php*) http://met.adwhirl.com/$1 [R,L]
+RewriteRule ^(adrollo.php*) http://mob.adwhirl.com/$1 [R,L]
+
+RewriteRule ^/?$ /index.php [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^/?(.*)$ /index.php/$1 [L,QSA]
+

@@ -1,0 +1,163 @@
+#summary List of AdWhirl Frequently Asked Questions
+==General Questions==
+
+ * *What is AdWhirl and why should I use it?*
+AdWhirl is a free, open source tool that helps you make more money from your iPhone or Android app. It enables you to serve ads in your app from any number of ad networks as well as your own house ads. By using multiple networks, you can determine which perform best for you and optimize accordingly to maximize your revenue and fill all your inventory.
+
+ * *Do I have to pay to use AdWhirl?*
+No. Both the AdWhirl Client SDK and Server code are free to download and use.
+
+ * *Does AdWhirl take a cut out of the revenue that I get from the ad networks?*
+No. AdWhirl is a free service to the mobile community, and we believe that it is a necessary component of a healthy mobile ecosystem.
+
+ * *How will I get paid?*
+You will receive payments directly from the ad networks you work with. AdWhirl does not have any insight into your business relationships with ad networks and does not have access to your eCPMs or earnings on the ad networks you use.
+
+ * *How is AdWhirl maintained?*
+AdMob has dedicated resources focused on improving the AdWhirl product and looks forward to working with the developer community at large to improve the product.  
+
+ * *Why did you decide to open source the AdWhirl Client SDK and server?*
+AdWhirl was acquired by AdMob in 2009. We decided to release it to the open source community so that ad mediation can be transparent and open and unbiased. Developers can review the code and then decide which ad networks to include in their own custom build.
+
+ * *I have an app that produces a lot of traffic. Can you guys handle a lot of traffic?*
+Yes. AdWhirl was built to handle massive amounts of traffic, and many apps that use AdWhirl generate millions of impressions per day, so you shouldn't worry about scalability issues with AdWhirl.
+
+ * *How do Allocation Percentages vs. Backfill work?*
+The former is used by AdWhirl to manage the first requests that are sent to the ad networks. These allocation percentages represent the percent of initial ad requests that will be sent to each network. (Please note that your allocation totals must add up to 100% before you'll be able to save your changes.)
+
+If these requests come back unfilled, AdWhirl will then roll over to your backfill settings, starting with your #1 priority network, and continuing down.
+
+If you'd like to use only priorities, and not percentages, to request ads, you should set 100% of allocations to your #1 priority ad network. This way, all requests will be sent to this network initially, then unfilled requests will be filtered down to your lower-priority backfill networks.
+
+ * *I created an account but haven't received a confirmation email.*
+Please check your spam folder to make sure the registration email wasn't accidentally placed there. If you're still unable to find it, you can fill out the "Sign Up" page for new accounts a second time to receive another email.
+
+ * *I'm having trouble logging in to my account.*
+Please be aware that the password field is case sensitive, so make sure you're typing in your password correctly and with the proper case. If you're still not able to log in, use the "Forgot Password" link to have a password reset email sent to you.
+
+
+ * *Who can I contact if I have problems?*
+The AdWhirl user forum is the best place to get technical help. Our AdWhirl team actively responds to questions on the forum, and members of the community also participate. You can find it at: http://groups.google.com/group/adwhirl-users. If you believe you've found a bug, you may first want to post it to the forum. If the bug is confirmed, you can report it via this link: http://code.google.com/p/adwhirl/issues/list. For more general questions, you can also write to us at support@adwhirl.com, and we'll get back to you as soon as we can.
+
+==Getting Started==
+
+ * *How long does it take to set up AdWhirl on my app?*
+Most developers can set up AdWhirl in less than an hour. For help getting started, take a look at our walk-through.
+
+ * *Do I need to get and install the ad libraries or SDKs for all the ad networks that I want to run inside AdWhirl?*
+Yes. You will need to retrieve the SDKs from each ad network you would like to include in the AdWhirl Open Source Client SDK. We have tested and verified that the SDK libraries for all supported ad networks are compatible with the AdWhirl SDK and have included detailed instructions to make integration easy for these ad networks.  
+
+ * *Do I need to create accounts with the ad networks that I want to run inside the AdWhirl SDK?*
+Yes. You will need to register and create accounts with all of the ad networks you want to run within the AdWhirl SDK. You will receive your payment checks and reporting of revenue metrics directly from the individual ad networks.   
+
+ * *I just signed up for AdWhirl but didn't get a verification message. What should I do?*
+If you didn't receive a sign-up verification message in your email inbox, please check your junk/spam boxes, especially if you've applied very strict spam filtering options. If you still don't see a verification email, please fill out the sign up form again to receive another email.
+
+ * *Can I add another ad network once I've submitted my app to the App Store? Will I need to post an update to the App Store?*
+You can turn on an ad network after the application is already in the App Store for any ad network whose library you included in your AdWhirl build. That means you don't have to go through the hurdles of updating the application to the App Store. All you have to do is: (1) log into AdWhirl, (2) paste in your credentials for the new ad network, and (3) reconfigure your traffic allocation percentages.
+
+==Custom Events and Generic Notifications==
+
+ * *What is a Custom Event?*
+A Custom Event is a mechanism by which you can allocate traffic to any number of additional ad networks that aren't already featured in AdWhirl. You can use Custom Events to allocate traffic to ad networks that AdWhirl has yet to integrate, to a third party ad server, and to any other specific action you'd like. Custom Events replaced Generic Notifications in AdWhirl after April 29, 2010. They differ from Generic Notifications in that they are truly generic - you can create as many of them as you want - and you have the ability to name each of them. However, because custom events are so generic, you need to specify a function name you want to associate with a particular event to define it (the callback function mentioned below).
+
+ * *What is a Function Name?*
+A function name is the function that AdWhirl will evoke when it makes a request through a custom event. It is important that you write the function name exactly as it appears in your code. No parameters are needed. For example: jumptapIntersitial and greystripeInterstitial are function names.
+
+ * *What is a Generic Notification? (What happened to Generic Notifications?)*
+Generic Notifications have now been replaced by the more general Custom Events. For older AdWhirl users, you'll notice that the Generic Notifications you set up in the past continue to function and can be managed through the AdWhirl web site. Adding an unlimited number of additional networks can now be done through Custom Events.
+
+==Help Make AdWhirl Better==
+
+ * *How can I contribute to the AdWhirl Open Source Project?*
+1) Clone the source code at http://code.google.com/p/adwhirl/source/list
+
+2) Post changes to 'Source' branch (development branch) and notify the user group
+
+3) AdMob will test these changes and migrate them into the 'download' version (release branch)
+
+ * *If I set up an AdWhirl server, do I need to use Amazon Web Services or can I host an instance of AdWhirl on my own servers?*
+It is possible to run on your own server and use MySQL, however, you'll need to change all the function calls to fetch from that difference data source. If you don't run on EC2 and still use SDB you will probably incur significant data transfer costs as all the data is fetched from outside the AWS network.
+
+ * *What changes can I make?*
+You can make any changes to the source code and submit new versions.
+
+ * *Will I get recognition for my contributions?*
+Yes, your name or company name can be acknowledged in the header of each source file you have modified or created. You may add an attribution or a copyright notice for the additions you have made to AdWhirl or your derivative work, in compliance with the Apache 2.0 license.
+
+ * *Questions we missed?*
+For further inquiries, please post a question to our user forum, http://groups.google.com/group/adwhirl-users, and we'll respond as soon as possible.
+
+==House Ads==
+
+ * *Can I use AdWhirl to run my own House Ads?*
+Yes. Simply click on the "House Ads" tab in the AdWhirl website after you are signed in. You will be able to create and manage your House Ads and choose which of your apps you'd like to see each House Ad appear in.
+
+ * *Can I prioritize individual House Ads?*
+You can dedicate a specific share of the inventory available to your House Ads to individual House Ads. Under the "Apps" tab, select one of your applications. Then select "House Ads" along the left-hand side. From here you'll be able to manage which of your House Ads appear within this app, and in what percentages.
+
+==Technical Questions (Client-Side)==
+
+ * *What delegate methods do I have to implement in my iPhone app to request ads using AdWhirl?*
+You only have to return the AdWhirl application key. You can optionally implement methods to know when ads are received, when the in-app webview is visible, when users tap on a banner ad (so you can pause games, for example), any many others, including the ability to pass in information so that networks can provide better targeted ads.
+
+ * *How can I include other ad networks that aren't already supported?*
+You can include as many additional ad networks as you'd like by using the Custom Events feature.
+
+You may also modify the AdWhirl Client SDK source to directly support the desired ad network, and, if you so chose, submit your patches to the AdWhirl open source team for possible inclusion in the AdWhirl Client SDK open source distribution.
+
+ * *Can I put the ad somewhere else, and not on top of the screen?*
+Yes. You can change the origin of the AdWhirlView frame to any spot you wish. You have full control over that frame and its size, but all of the ad content fits nicely in a 320x50 pixel frame size.   The Preview on the AdWhirl website will not reflect these changes.
+
+ * *Does the AdWhirl SDK check network connectivity before attempting to request ads and prevent battery drainage?*
+Yes. The client SDK checks to see if network connectivity is available before allowing any ad requests to run. If no network connectivity is available, no ad requests are made. Therefore, note that since no ad requests are made, no callbacks will be made.
+
+ * *I have set 'Allow Location Access' to ON, yet I do not get this information.*
+If the ad networks you are using do not support location-based targeting, you will not be able to benefit from this feature. It is also possible that the ad networks SDKs are configured in such a way that they will override any AdWhirl settings. We recommend that you check the documentation of the ad networks' clients.
+
+ * *My animation and color settings do not seem to be respected.*
+If the ad networks you are using do not support these settings, you will not be able to benefit from this feature. It is also possible that the ad networks' SDKs are configured in such a way that they will override any AdWhirl settings. We recommend that you check the documentation of the ad networks' clients.
+
+ * *My iPhone app uses TouchJSON (or TouchXML), and I get a linker error when building my project. What should I do?*
+Some ad networks' SDK's include compiled TouchJSON / TouchXML. The way around this is to just include the TouchJSON headers (or TouchXML headers) without building the .m files, so that you don't produce object files that will cause a linker error when the linker tries to link the ad networks' libraries. The TouchJSON headers are included with the AdWhirl iPhone SDK source.
+
+ * *I use Pinch Media Analytics. I get a linker error when building my project regarding TouchJSON.*
+If you're having issues with Pinch Media, it may be because TouchJSON is already included in the library (see question above).
+
+ * *How do I load the AdWhirlSDK2_Sample onto my iPhone so that I can test on an actual device?*
+You must first download ad network SDKs and put them in the AdNetworkLibs directory per the setup instructions. Then, click on Info.plist and change the "Bundle Identifier" value to something that your provisioning profile supports (e.g. com.yourcompany.sampleapp). Then, go to the build tab after double-clicking on your application's target and choose a provisioning file + development certificate combo. Lastly, change your Active SDK platform on the upper-left section on XCode to a version of "iPhone Device". You may have to reopen XCode if you're still having issues during the code-sign process or application load process.  
+
+ * *Can I use my version of TouchJSON, TouchXML, or FMDB since the ad network libraries already compiled them?*
+Yes. You can refactor the class names of your version of TouchJSON, TouchXML or FMDB and make calls to your refactored classes. In that case, for example, you would no longer run calls to CJSON or CXML, but you'd make calls to your own classes instead (e.g. AWJSON or AWXML). In the meantime, we're providing this feedback to ad networks and urging them to refactor these classes.  
+
+ * *I've set my refresh interval to X seconds. I don't see an ad every X seconds. Is there something else I need to do?*
+When a refresh kicks in, a requestFreshAd call is made automatically. The call will choose an ad network based on the traffic allocation percentages you've applied. An ad request is then triggered. If the ad request fails, the backfill priorities will then be used. If all of these backup sources are used and all ad requests still fail, the SDK will stop fetching ads for this refresh. As a result, you will not see an ad refresh.
+
+ * *What iPhone OS versions does AdWhirl support?*
+AdWhirl currently supports iPhone OS versions 2.2.1 and above, and Android. You can download instructions on how to configure AdWhirl for a specific OS by logging in to your account and visiting the Dev Resources page.
+
+ * *How can I resize the AdWhirlView's frame size after rotating into landscape mode?*
+You have full control over the view frame. You will also notice that if you adjust the frame's size to any CGSize (such as 480x50), the frame will adjust accordingly. However, the ad content will still stay at 320x50. Therefore, we recommend that you simply center the view in landscape mode. To do so, adjust the view resizing mask to pad the left and right margins of the view (adWhirlView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin). Also, don't forget to set the clipsToBounds property to YES so that the animation happens within the 320x50 frame and doesn't leak out of that frame.
+
+ * *How much latency does AdWhirl add to a typical ad request?*
+AdWhirl makes one request per application invocation to the AdWhirl server to retrieve configuration settings, on the first ad request. You can pre-fetch the configuration when the application starts so the configuration is ready when you are ready to show the first ad, hence the ad will show up more quickly. On the iPhone, You can call [AdWhirlView startPrefetchingConfigurationDataWithDelegate:] to start pre-fetching the configuration. On Android, the configuration data is fetched as soon as the AdWhirlLayout is created.
+
+ * *How much bigger will my executable become if I add AdWhirl and multiple ad networks?*
+How much bigger your executable will become depends on how many ad networks you include and your build settings (optimization level, debug symbol generation, etc.). You can find out how much the AdWhirl code adds to the size of your application by removing all AdWhirl source files from your build target and commenting out all AdWhirl-related code, then looking at the size of your build product. To find out how much ad network libraries add to the size of your application, remove the adapters from your build target and look at the size of your final build product. As a point of reference: the iPhone sample AdWhirlSDK2_Sample is about 1.1MB when built using the "iPhone Device 3.0" SDK, the "Release" configuration, and with all the ad networks included (AdMob, JumpTap, MdotM, Millennial, Quattro, VideoEgg). Removing all the ad network adapters from the build target, it is about 270 KB.
+
+==iAds==
+
+ * *I'm running into build errors trying to integrate iAd. What should I do?*
+iAd requires XCode 3.2.3 and AdWhirl version 2.3.0 or above. Please make sure you're building with the most current version of XCode, the most current version of the AdWhirl SDK (available at http://code.google.com/p/adwhirl), and the most recent version of each ad network's SDK. Also verify that you are building for Base SDK 4.0.
+
+If you continue to experience errors, please post your question to our user forum: http://groups.google.com/group/adwhirl-users
+
+ * *If I choose to integrate iAd, how does AdWhirl handle iOS 2.x and iOS 3.x devices that can't display iAds?*
+AdWhirl will intelligently handle this by not requesting iAds on devices that are incapable of displaying them. On devices that are not running iOS 4.0, AdWhirl will zero out the percentage you've assigned to iAd, and will bump up your other percentages to total 100%. For example, if you initially had 50% of ad requests allocated to iAd, 40% to Millennial, and 10% to JumpTap, devices that can't display iAds will make 80% of requests to Millennial and 20% to JumpTap.
+
+Because of the way we scale up allocation percentages, you should not set 100% of initial ad requests to iAd. If you do this, no ads will be served on non-iOS 4.0 devices. A useful work-around is to assign a maximum of 99% of ad requests to iAd. We are working on modifying this behavior in future releases of the AdWhirl SDK.
+
+AdWhirl will also intelligently remove iAd from your backfill priorities on devices that cannot display iAds.
+
+ * *I'm still not seeing iAds - what's going on?*
+It's possible that the fill rate on iAd is causing your ad requests to go unfilled. You should take a look at the log output from your app to see whether requests are being made and coming back unfilled.

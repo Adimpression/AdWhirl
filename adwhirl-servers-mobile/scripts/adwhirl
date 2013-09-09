@@ -1,0 +1,74 @@
+#!/bin/bash
+
+function print_help {
+  echo 'Usage: adwhirl [start_invoker|start_daemon|stop_invoker|stop_daemon|stop_all]'
+  echo ''
+  exit 1
+}
+
+
+if [ $# -gt 1 ] || [ $# -eq 0 ]; then
+    print_help
+fi
+
+command=$1
+
+function start_invoker {
+    ulimit -n 819200
+
+    java -server -Xms256m -Xmx1024m -cp adwhirl.jar Invoker >Invoker.log 2>Invoker.err &
+
+    sleep 180
+}
+
+function start_daemon {
+   java -server -cp adwhirl.jar Daemon >Daemon.log 2>Daemon.err &
+   
+   sleep 30
+}
+
+function stop_invoker {
+    for pid in `ps auxww | grep java | grep -i adwhirl.jar | grep -i Invoker | grep -v Daemon | awk '{print $2}'`; do
+	kill -15 $pid
+    done
+    
+    sleep 30
+    
+    for pid in `ps auxww | grep java | grep -i adwhirl.jar | grep -i Invoker | grep -v Daemon | awk '{print $2}'`; do
+	kill -9 $pid
+    done
+}
+
+function stop_daemon {
+    for pid in `ps auxww | grep java | grep -i adwhirl.jar | grep -i Daemon | grep -v Invoker | awk '{print $2}'`; do
+	kill -15 $pid
+    done
+    
+    sleep 10
+    
+    for pid in `ps auxww | grep java | grep -i adwhirl.jar | grep -i Daemon | grep -v Invoker | awk '{print $2}'`; do
+	kill -9 $pid
+    done
+}
+
+if [ ${command} = 'start_invoker' ]; then
+    start_invoker
+
+elif [ ${command} = 'start_daemon' ]; then
+    start_daemon
+
+elif [ ${command} = 'stop_invoker' ]; then
+    stop_invoker
+
+elif [ ${command} = 'stop_daemon' ]; then
+    stop_daemon
+
+elif [ ${command} = 'stop_all' ]; then
+    stop_invoker
+    stop_daemon
+
+else
+    print_help
+fi
+
+exit 0

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.adwhirl"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/layout_main" >
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:text="@string/hello" />
+    <com.adwhirl.AdWhirlLayout
+        android:id="@+id/adwhirl_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/below_layout_xml" />
+</LinearLayout>

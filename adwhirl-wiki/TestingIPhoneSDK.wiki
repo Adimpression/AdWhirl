@@ -1,0 +1,70 @@
+#summary How to run tests for the iPhone SDK
+
+= Tests =
+
+We have added a testing framework for the iPhone SDK. Here's how you can run tests. If you do contribute, be sure to write tests for your code.
+
+We use [http://code.google.com/p/google-toolbox-for-mac/ Google Toolbox for Mac] and [OCMock http://www.mulle-kybernetik.com/software/OCMock/] to build the testing framework. Visit these projects to learn more about them. The GTM test framework also runs leaks at the end of the test, so it catches memory leaks as well.
+
+= Setting Up =
+
+The testing code is *NOT* distributed along with the release packages. You have to clone the code to run tests. You will also have to download GTM and OCMock separately as we do not have them in the source repository.
+
+== Cloning the Code ==
+
+Clone the code by following the instructions in the [http://code.google.com/p/adwhirl/source/checkout?repo=sdk-iphone Source tab], or if you plan to contribute back, [http://code.google.com/p/adwhirl/source/createClone?repo=sdk-iphone create your server-side clone].
+
+The instructions below assumes you cloned the source to the `adwhirl-sdk-iphone/` directory.
+
+== Downloading GTM ==
+
+ * [http://code.google.com/p/google-toolbox-for-mac/source/checkout Checkout GTM] by:
+  * `svn checkout http://google-toolbox-for-mac.googlecode.com/svn/trunk/ google-toolbox-for-mac`
+ * Create a directory in your AdWhirl clone `adwhirl-sdk-iphone/iphone/GoogleToolboxForMac/`
+ * Copy these files and directories from your `google-toolbox-for-mac/` directory to `adwhirl-sdk-iphone/iphone/GoogleToolboxForMac/`
+  * `Foundation`
+  * `GTMDefines.h`
+  * `UnitTesting`
+
+== Downloading and Building OCMock ==
+
+ * Download OCMock 1.70 or later at http://www.mulle-kybernetik.com/software/OCMock/
+ * Open the dmg, copy `Source/ocmock-1.70` to `adwhirl-sdk-iphone/AdWhirlTests/OCMock`
+
+You also need to build OCMock:
+ * Open `adwhirl-sdk-iphone/AdWhirlTests/OCMock/OCMock.xcodeproj` in Xcode.
+ * Build the OCMockLib target, using the Debug configuration.
+
+http://wiki.adwhirl.googlecode.com/hg/OCMock.png
+
+= Running the Tests =
+
+The tests are located in the directory [http://code.google.com/p/adwhirl/source/browse/?repo=sdk#hg/iphone/AdWhirlTests iphone/AdWhirlTests].
+
+ * Open [http://code.google.com/p/adwhirl/source/browse/?repo=sdk#hg/iphone/AdWhirlTests iphone/AdWhirlTests/AdWhirlTests.xcodeproj] in Xcode.
+ * If you have built OCMock correctly, the OCMock Library group should be in black. Otherwise you'll see it in red.
+ * Select AdWhirlTests target.
+ * Open the Build Results window (Build Menu -> Build Results or Shift-Command-B ⇧⌘B).
+ * Do a build (Command-B ⌘B). If all goes well, you should see Build Succeeded.
+
+http://wiki.adwhirl.googlecode.com/hg/XcodeTestBuildSucceeded.png
+
+ * If a test failed, you should see Build Failed . You may have to scroll up pass the very verbose output to find the error.
+
+http://wiki.adwhirl.googlecode.com/hg/XcodeTestBuildFailedError.png
+
+ * There may be subsequent warnings resulting from the failure, but all of them may be the result of the failed test. Specifically, when a test fails, the code bails early, and subsequent code that releases memory are not run. This can result in memory leak warnings. Focus on the error first.
+
+http://wiki.adwhirl.googlecode.com/hg/XcodeTestBuildFailed.png
+
+ * If your code leaks memory, you'll receive memory leak warnings even if all the tests passed. Look at the leak warning and the Call stack to figure out where you leaked the memory.
+
+http://wiki.adwhirl.googlecode.com/hg/XcodeTestBuildLeaks.png
+
+ * Note that all the tests are run in the Build. You can still run the application, set breakpoints and debug as usual.
+
+= Code Coverage =
+
+The targets are configured to emit code coverage information. You can use [http://code.google.com/p/coverstory/ coverstory] to look at test code coverage and use it to determine what tests to write next. Download coverstory and point it to your build directory at `iphone/AdWhirlTests/build/AdWhirlTests.build/Debug-iphonesimulator/AdWhirlTests.build/Objects-normal/i386/`
+
+http://wiki.adwhirl.googlecode.com/hg/Coverstory.png

@@ -1,0 +1,149 @@
+#summary Introduction to using AdWhirl
+
+This wiki page will take you through the steps of getting started with !AdWhirl.
+
+== 1. Download the !AdWhirl SDK ==
+
+The first step, once you've created an account, is to download the !AdWhirl SDK.
+
+Log in to your account and click the "Dev Resources" tab.
+
+<img src="http://wiki.adwhirl.googlecode.com/hg/images/1-dev_resources_0.jpg"/>
+
+From here you can navigate to the Google code page on which the !AdWhirl project is hosted.
+
+Click the download tab, and you'll be able to download the newest version of the SDK.
+
+<img src="http://wiki.adwhirl.googlecode.com/hg/images/1-google_code_page_0.jpg"/>
+
+Integrating the SDK is quick and straightforward. Complete instructions are provided in the SDK download.
+
+Don't forget that it's also necessary to set up accounts with individual ad networks, and to download their respective SDK's for inclusion into your app.
+
+== 2. Add an App ==
+
+Now it's time to add an app to your account
+
+You'll start out on the "Apps" tab, which can be used to view all the apps that you've integrated with !AdWhirl.
+
+Click the "Add Application" button to add a new app in the system.
+
+<img src="http://wiki.adwhirl.googlecode.com/hg/images/2-add_app_button_0.jpg"/>
+
+Enter the name and app store URL of your app, and choose whether this is an Android or iPhone app (if your app isn't yet released, feel free to leave the URL field blank). If you are configuring an iPhone app, this will be the App Store URL; if you're setting up an Android app, it will be the Android Market URL.
+
+<img src="http://wiki.adwhirl.googlecode.com/hg/images/2-add_app_screen_0.jpg"/>
+
+Optionally, you can set additional preferences on how ads should display in this app. Be aware that in some cases these preferences can be overridden by individual ad networks, so you may not always see the color or animation you've chosen.
+
+Click OK and your app will be created in our system.
+
+Click on the app that has just been created, and pay attention to the SDK key that was generated (it appears next to the app's name). You will need to paste this into the code of the SDK to identify your app to !AdWhirl's servers.
+
+== 3.  Set Up Your Ad Networks ==
+
+Now you can set up the different ad networks you'll use.
+
+From the Apps tab, click on the app that you've just created.
+
+You'll be taken to the "Ad Network Settings" page for that app. Here you can enable and disable different ad networks, and choose how much traffic to send to each one.
+
+<img src="http://wiki.adwhirl.googlecode.com/hg/images/3-allocations_0.jpg"/>
+
+To add any number of additional ad networks that aren't already featured, you can use Custom Events.
+
+At this point you should already have signed up for an account with these ad networks. Click the Configure button, and you'll be prompted to enter the credentials that you obtained from each network.
+
+Once you've done this, you can turn the network on or off using the On-Off button, and choose the percent of traffic that you want to assign to each network.
+
+Note that your allocation percentages must add up to 100% before you'll be able to save these settings.
+
+For a deeper understanding, allocation percentages tell !AdWhirl where to send ad requests on the first try. If an ad request to a given network fails, your Backfill Priorities will kick in, and !AdWhirl will filter the ad request down to each network on your list.
+
+Even if a network has a 0% allocation, it may still get some requests through backfill. To ensure that no ad requests ever go to a network, make sure to switch it off using the On-Off button.
+
+You're also able to add any number of additional networks that aren't supported by default using the Custom Events tool. Custom events and House Ads behave just like any of the default networks when it comes to assigning allocations.
+
+== 4. Set Backfill Priorities ==
+
+Now it's time to set your Backfill Priorities for this app.
+
+You'll use this page to tell !AdWhirl what priorities to follow in case an initial ad request is unfilled by one of your networks.
+
+You should still be on the configuration screen for the app you added. To get back to this screen, just click the "Apps" tab and then select the app you'd like.
+
+Now click the "Backfill Priority" tab on the left side of the screen.
+
+You'll notice that all the networks that you've turned on are displayed here. (If you don't want a network to ever receive requests, even backfill, make sure to switch it to Off on the "Ad Network Settings" tab. Once you do this, it will disappear from your list of Backfill Priorities.)
+
+<img src="http://wiki.adwhirl.googlecode.com/hg/images/4-backfill_priority_0.jpg"/>
+
+Take a second to set your priorities (by default they are set in the order the networks were added, and alphabetically for networks that were created at the same time).
+
+The priorities you set here specify the order in which ad requests will filter down to different networks, assuming they can't be filled by a higher-priority network.
+
+In the example above, a failed request to !AdMob would then be sent to Jumptap. If that request failed, it would continue on to MdotM, and so on.
+
+Make sure to save your settings before moving on.
+
+== 5. Create House Ads ==
+
+You can optionally create your own House Ads and choose when to display them.
+
+House Ads, formerly known as custom ads, allow you to create an ad of your own and display it according to priorities that you set.
+
+A House Ad can be used to cross-promote one of your other apps, for example.
+
+House Ads are now cross-platform, meaning that you can create one House Ad and display it within your iPhone or Android apps.
+
+To create a House Ad in your !AdWhirl account, click the House Ads tab along the top of the screen. All the House Ads in your account are centrally managed through this tab. (The House Ad preferences tab on the left of an app's configuration screen is used to manage your House Ad preferences for that individual app).
+
+Click the "Add House Ad" button.
+
+First, name your House Ad and choose what the goal of your House Ad is (link to an app in the app store, a website, etc.). Make sure to enter a landing page URL including "http://".
+
+<img src="http://wiki.adwhirl.googlecode.com/hg/images/5-house ad_0.jpg"/>
+
+Now choose whether you want your House Ad to be a full banner image, or a text ad with a small accompanying icon. Choose the corresponding radio button and upload an image as needed.
+
+A preview of how your House Ad will look is available on the right side of the screen.
+
+Finally, use the checkboxes to choose which of your apps this House Ad will appear in.
+
+== 6. Allocate your House Ads ==
+
+Once you've created one or more House Ads, you can manage when they appear, individually, for each of your apps.
+
+You can now allocate House Ads in any percentage you choose in any of your apps.
+
+When House Ads are served as backfill and not on the initial request, these percentages *will not apply*. All House Ads that you've added to a particular app have an equal chance of being served as backfill.
+
+To manage which House Ads appear in a given app, and how often, select one of your apps from the "Apps" tab, then click the "House Ads" tab on the left of the app's configuration page.
+
+<img src="http://wiki.adwhirl.googlecode.com/hg/images/6-house_ad_alloc.jpg"/>
+
+From here you can add new House Ads to appear in the app, either by creating an entirely new House Ad, or by selecting one that you had previously created.
+
+Of the total traffic that you have allocated to House Ads, you can also set the percentages in which each individual House Ad will appear. Please note that these percentages are the percentage of House Ad impressions that will be given to each of the ads, not the percentage of overall impressions.
+
+For example, if you have two House Ads, each set to receive 50% of House Ad traffic, and your overall allocation to House Ads is 20% of traffic, each of these ads will be displayed on about 10% of ad requests.
+
+== 7. View Reports ==
+
+Once ads have begun to run in your apps, you can view reporting information on the Reports page.
+
+The Reports page has been revamped to show your key statistics in a more intuitive way.
+
+To avoid cluttered graphs, only top apps or top networks will be shown as separate lines in the UI. Other apps and networks will be lumped into the "Others" category.
+
+However, in the reports that can be downloaded in CSV format, complete information on all networks is provided.
+
+To access your reports, click the "Reports" tab along the top of the screen.
+
+For application reporting, select the "Apps" tab on the left-side navigation bar and choose any one of your applications from the drop-down menu on the right-hand side. You may also select a time period. You'll be able to see statistics of all impressions in the app you've selected, across all the sources of ad inventory you have chosen.
+
+<img src="http://wiki.adwhirl.googlecode.com/hg/images/7-reporting.jpg"/>
+
+To see how your House Ads are performing across your different apps, select the "House Ads" option on the left side of the Reports screen. This will display statistics on House Ad performance across all your applications.
+
+That's it! We hope you enjoy using !AdWhirl's new interface. If you have any questions or problems, contact us through the [http://groups.google.com/group/adwhirl-users AdWhirl user forum] and we'll get back to you as soon as possible.

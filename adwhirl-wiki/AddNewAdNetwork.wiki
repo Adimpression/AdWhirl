@@ -1,0 +1,133 @@
+#summary How to add a new ad network
+
+= Introduction =
+
+There are three ways to add a new ad network:
+
+ # Use the [GenericNotifications Generic Notifications] mechanism for shorter-term or one-off implementations, or if you are less inclined to modify the server. See the linked wiki for details.
+ # Use the [CustomEvents Custom Events] mechanism. Custom Events are very similar to Generic Notifications, and you can configure an unlimited number of them and assign each of them a percentage of your traffic and fall back priorities.
+ # Doing it "the right way," with full server support for allocations and rollover priorities, by implementing adapters and updating the server code.
+
+= Full Integration =
+
+There are a few steps for full integration:
+
+ # First, please file an [http://code.google.com/p/adwhirl/issues/list Issue] ticket as you need to coordinate with us.
+ # Your ad network needs to be assigned an ad network type. Each ad network has an ad network type as an integer or enum. Some ad network types are already reserved for ad networks that we have yet to integrate, so be sure to read the list of existing defined type numbers before adding a new one. If there is none for your network, note in the issue you filed to get a new ad network type.
+ # Implement the necessary adapters. Make a server clone of the source code, for [http://code.google.com/p/adwhirl/source/createClone?repo=sdk-android Android SDK] or the [http://code.google.com/p/adwhirl/source/createClone?repo=sdk-iphone iPhone SDK]. Then, clone your server clone into your machine and make your changes. Test it and push your changes back to your server side clone. Note the name of your server clone in the issue you filed.
+ # We will review and test your code. We will also add necessary server-side UI for your ad network, and setup a staging server for you to test.
+
+= Implementation Details =
+
+== Client Side ==
+
+=== iPhone ===
+
+You can add a new ad network by modifying and adding files under the `AdWhirl/adapters` directory.
+
+ * If necessary, edit the file `AdWhirlAdNetworkAdapter.h` and add a new enum to `AdWhirlAdNetworkType` with the new ad network type.
+ * Create a new adapter class for your ad network and subclass it from `AdWhirlAdNetworkAdapter` .
+ * Make sure you implement the `+networkType` and `+load` class methods. In `+networkType` you must return the enum of the ad network. In `+load` you should add your `AdWhirlAdapter` class to the ad network registry. For example, this is what was implemented for Quattro:
+{{{
++ (AdWhirlAdNetworkType)networkType {
+  return AdWhirlAdNetworkTypeQuattro;
+}
+
++ (void)load {
+  [[AdWhirlAdNetworkRegistry sharedRegistry] registerClass:self];
+}
+}}}
+ * Make sure you implement the `getAd` method to request an ad from the ad network API/SDK and assign the resulting `UIView` object to the `adNetworkView` instance variable.
+ * Make the adapter class a delegate of the ad network's API. Implement delegate methods in the adapter class.
+  * If you need to retrieve configuration or other information from AdWhirl SDK's delegate, you can access the instance variable `adWhirlDelegate` directly. There are also helper methods you can use (and extend if necessary) in the `Helper` category of `AdWhirlAdNetworkAdapter` . See `AdWhirlAdNetworkAdapter+Helpers.h` .
+ * Pass along success, failure and other callbacks from the ad network's API to AdWhirl SDK's delegate. For example, this is what was implemented for AdMob:
+{{{
+- (void)didReceiveAd:(AdMobView *)adView {
+  [adWhirlView adapter:self didReceiveAdView:adView];
+}
+
+- (void)didFailToReceiveAd:(AdMobView *)adView {
+  [adWhirlView adapter:self didFailAd:nil];
+}
+
+- (void)willPresentFullScreenModal {
+  [self helperNotifyDelegateOfFullScreenModal];
+}
+
+- (void)didDismissFullScreenModal {
+  [self helperNotifyDelegateOfFullScreenModalDismissal];
+}
+}}}
+
+=== Android ===
+
+You can add a new ad network by modifying and adding files under the `src/com/adwhirl/adapters` directory.
+
+ * Edit the file `src/com/adwhirl/util/AdWhirlUtil.java` and add a new `NETWORK_TYPE_` with the new ad network type.
+ * Create a new adapter class for your ad network and subclass it from `AdWhirlAdapter` .
+ * Make sure you implement the `handle()` method. In addition, on successfully receiving an ad you'll want to do something similar to the following:
+{{{
+adWhirlLayout.adWhirlManager.resetRollover();
+adWhirlLayout.nextView = adView;
+adWhirlLayout.handler.post(adWhirlLayout.viewRunnable);
+adWhirlLayout.rotateThreadedDelayed();
+}}}
+
+On failure to receive an ad you'll want to do something similar to the following:
+{{{
+adView.setAdListener(null);
+adWhirlLayout.rollover();
+}}}
+
+
+== Server Side ==
+
+In order to fully integrate a new ad network, you will need to modify both the website and mobile server code.
+
+In the website file "includes/inc_global_no_session.php", you will see a block of code containing ad networks. Simply add a new network to the end. _Take care not to renumber any existing networks._
+{{{
+$allNetworksGlobal = array(
+  array(  'ID' => 1,
+          'Name' => 'AdMob',
+          'Website' => 'http://www.admob.com',
+          'MobilePrefix' => 'admob_',
+          'Show' => true,
+          'IsServer' => false)
+         
+          ...
+  )
+)
+}}} 
+
+If the network has multiple api keys, you will also need to add code to "main.php" in order to display the inputs correctly. 
+{{{
+else if($oneNetwork['ID'] == 3) { //VideoEgg 
+  $keys = explode(KEY_SPLIT,$apikey);
+  if(count($keys) != 2) {
+    $keys = array();
+    $keys[0] = $keys[1] = '';
+  }
+  $apiText = '<tr><td width="100">PartnerID: </td><td><input name="apikey[]" type="text" class="text" value="'.$keys[0].'" maxlength="255"/></td></tr>                                                 
+  <tr><td width="100">SiteID: </td><td><input name="videoegg_key" type="text" class="text" value="'.$keys[1].'" maxlength="255"/></td></tr>';
+}
+}}}
+
+Next, you will need to edit the mobile server code utility file "src/util/!AdWhirlUtil.java" to include an enumeration and network prefix for the new network.
+{{{
+public static enum NETWORKS...
+public static String getNetworkPrefix(int type)...
+}}}
+
+Finally, you will need to modify the configuration servlet "src/servlet/!ConfigServlet.java" to handle multiple api keys (if neccessary).
+{{{
+else if(ration.getType() == AdWhirlUtil.NETWORKS.QUATTRO.ordinal()) {
+  String[] temp = ration.getNetworkKey().split(AdWhirlUtil.KEY_SPLIT);
+
+  jsonWriter = jsonWriter.object()
+    .key("siteID")
+    .value(temp[0])
+    .key("publisherID")
+    .value(temp[1])
+    .endObject();
+}
+}}}

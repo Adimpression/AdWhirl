@@ -1,0 +1,10 @@
+syntax:glob
+*~
+*.orig
+nbproject/*
+inc/smarty/templates_c/*.php
+www.adwhirl.com/imagesTemp/*.jpg
+inc/class/FirePHPCore/fb.php
+\.*
+syntax: regexp
+(.*/)?\.?\#[^/]*\#?$

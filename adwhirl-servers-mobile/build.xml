@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<!--
+Copyright 2009-2010 AdMob, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+
+<project name="adwhirl" default="build" basedir=".">
+  <property environment="env"/>
+  <property name="debuglevel" value="source,lines,vars"/>
+  <property name="target" value="1.5"/>
+  <property name="source" value="1.5"/>
+
+  <property name="web.dir" value="www"/>
+  <property name="res.dir" value="res"/>
+  <property name="configs.dir" value="${res.dir}/configs"/>
+
+  <property name="dist.dir" value="dist"/>
+  <property name="jar.name" value="adwhirl" />
+  <property name="jar.file" value="${dist.dir}/${jar.name}.jar" />
+
+  <property name="build.dir" value="bin" />
+  <property name="source.dir" value="src" />
+  <property name="scripts.dir" value="scripts" />
+  <property name="lib.dir" value="lib" />
+
+  <path id="adwhirl.classpath">
+    <pathelement location="bin"/>
+    <pathelement location="lib/activation.jar"/>
+    <pathelement location="lib/aws-java-sdk-1.0.003.jar"/>
+    <pathelement location="lib/commons-codec-1.3.jar"/>
+    <pathelement location="lib/commons-httpclient-3.1.jar"/>
+    <pathelement location="lib/commons-logging-1.1.jar"/>
+    <pathelement location="lib/ehcache-1.6.2.jar"/>
+    <pathelement location="lib/jackson-core-asl-1.4.3.jar"/>
+    <pathelement location="lib/javax.servlet.jar"/>
+    <pathelement location="lib/jaxb-api.jar"/>
+    <pathelement location="lib/jaxb-impl.jar"/>
+    <pathelement location="lib/jaxb-xjc.jar"/>
+    <pathelement location="lib/jetty-6.1.22.jar"/>
+    <pathelement location="lib/jetty-util-6.1.22.jar"/>
+    <pathelement location="lib/jsr173_1.0_api.jar"/>
+    <pathelement location="lib/log4j-1.2.14.jar"/>
+    <pathelement location="lib/saxon9he.jar"/>
+    <pathelement location="res/configs"/>
+  </path>
+
+  <!-- Hack for JAR classpath -->
+  <property name="jar-all" location="lib" />
+  <fileset id="jars" dir="${jar-all}">
+    <include name="*.jar" />
+  </fileset>
+  <path id="cp"> <fileset refid="jars" /> </path>
+  <pathconvert property="jarclasspath" refid="cp" pathsep=" " dirsep="/">
+    <map from="${jar-all}" to="lib" />
+  </pathconvert>
+
+  <target name="init">
+    <mkdir dir="bin"/>
+    <copy todir="bin" includeemptydirs="false">
+      <fileset dir="." excludes="**/*.launch, **/*.java"/>
+    </copy>
+    <copy todir="bin" includeemptydirs="false">
+      <fileset dir="src" excludes="**/*.launch, **/*.java"/>
+    </copy>
+  </target>
+  <target name="clean">
+    <delete dir="${build.dir}" includeEmptyDirs="true" />
+    <delete dir="${dist.dir}" includeEmptyDirs="true" />
+  </target>
+  <target name="build"> 
+    <mkdir dir="${build.dir}" />
+
+    <javac destdir="bin" debug="true" debuglevel="${debuglevel}" source="${source}" target="${target}">
+      <src path="."/>
+      <exclude name="res/"/>
+      <exclude name="res/configs/"/>
+      <exclude name="src/"/>
+      <classpath refid="adwhirl.classpath"/>
+    </javac>
+    <javac destdir="bin" debug="true" debuglevel="${debuglevel}" source="${source}" target="${target}">
+      <compilerarg value="-Xlint"/> 
+      <src path="src"/>
+      <classpath refid="adwhirl.classpath"/>
+    </javac>
+  </target>
+  <target name="dist" depends="build" description="Bundles the package into a JAR">
+    <!-- Package the Jar -->
+    <mkdir dir="${dist.dir}" />
+    
+    <!-- Copy scripts -->
+    <copy todir="${dist.dir}">
+      <fileset dir="${scripts.dir}" includes="**/*" />
+    </copy>    
+
+    <!-- Package the distribution Jar -->
+    <jar destfile="${jar.file}">
+
+      <!-- Package all the compiled classes and the resources -->
+      <fileset dir="${build.dir}" includes="**/*.class" />
+      <fileset dir="${res.dir}" includes="**/*" />
+      <fileset dir="${source.dir}" includes="**/*.java" />
+      
+      <!-- Add extra Manifest properties -->
+      <manifest>
+	<attribute name="Build" value="${TODAY} ${TSTAMP}" />
+	<attribute name="Main-Class" value="Invoker" />
+	<attribute name="Class-Path" value="${jarclasspath} configs/" />
+      </manifest>
+
+    </jar>
+
+    <!-- Copy the third party libraries -->
+    <mkdir dir="${dist.dir}/lib" />
+
+    <copy todir="${dist.dir}/lib">
+      <fileset dir="${lib.dir}" includes="**/*" />
+    </copy>
+
+    <!-- Copy the configuration files -->
+    <mkdir dir="${dist.dir}/configs" />
+
+    <copy todir="${dist.dir}/configs">
+      <fileset dir="${configs.dir}" includes="**/*" />
+    </copy>
+
+    <chmod perm="ugo+rx">
+      <fileset dir="${dist.dir}" excludes="**/*.jar" />
+    </chmod>
+
+    <!-- Copy the static files served up through HTTP -->
+    <!--
+    <copy todir="${dist.dir}/${web.dir}">
+      <fileset dir="${web.dir}" includes="**/*" />
+    </copy>
+    -->
+  </target>
+  <target name="package" depends="dist" description="Packages the distribution into a tar.gz.">
+    <!-- Tar all the files together -->
+    <tar destfile="${build.dir}/${jar.name}.tar">
+      <tarfileset dir="${dist.dir}">
+	<exclude name="configs/test*.properties" />
+	<exclude name="configs/cruise*.properties" />
+	<exclude name="log/*" />
+	<exclude name="lib/junit*.jar" />
+      </tarfileset>
+    </tar>
+
+    <!-- Zip the .tar -->
+    <gzip
+       src="${build.dir}/${jar.name}.tar"
+       destfile="${build.dir}/${jar.name}.tar.gz"
+       />
+
+    <!-- Remove the .tar leaving only the .tar.gz -->
+    <delete file="${build.dir}/${jar.name}.tar" />
+
+  </target>
+  <target name="Invoker">
+    <java fork="yes" classname="Invoker" failonerror="true">
+      <classpath refid="adwhirl.classpath"/>
+    </java>
+  </target>
+</project>

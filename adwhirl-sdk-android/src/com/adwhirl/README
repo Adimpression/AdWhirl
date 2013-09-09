@@ -1,0 +1,39 @@
+/*
+ Copyright 2009-2010 AdMob, Inc.
+ 
+    Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+  http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+
+Please see http://www.adwhirl.com/doc/android/AdWhirlAndroidSDKSetup.html for setup instructions, Changelog.txt for changes in this version and http://code.google.com/p/adwhirl for the latest news, releases and issue reports.
+
+Quick Start:
+
+Add the following mandatory permissions to AndroidManifest.xml
+
+	<uses-permission android:name="android.permission.INTERNET" />
+
+And the following optional permissions
+
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> 
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
+
+Create an AdWhirlLayout. Make sure that this code is called in the main thread.
+
+	AdWhirlLayout adWhirlLayout = new AdWhirlLayout(this, "AdWhirl SDK Key");
+	RelativeLayout.LayoutParams adWhirlLayoutParams = new RelativeLayout.LayoutParams(320, 52);
+	layout.addView(adWhirlLayout, adWhirlLayoutParams);
+
+You can choose whatever size you want for the layout. We suggest 320x52, as this is the largest ad unit size. If you choose to make the view smaller, ads will still display, but may cut off a few pixels and display a small scroll bar.
+
+You can take a look at our sample Invoker activity here: http://code.google.com/p/adwhirl/source/browse/android/src/com/adwhirl/Invoker.java?repo=sdk

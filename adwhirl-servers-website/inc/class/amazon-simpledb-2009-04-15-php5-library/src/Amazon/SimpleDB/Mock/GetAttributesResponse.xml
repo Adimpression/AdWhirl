@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetAttributesResponse xmlns="http://sdb.amazonaws.com/doc/2009-04-15/">
+  <GetAttributesResult>
+    <!--Zero or more repetitions:-->
+    <Attribute>
+      <Name>string</Name>
+      <!--Optional:-->
+      <Value>string</Value>
+    </Attribute>
+  </GetAttributesResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+    <BoxUsage>string</BoxUsage>
+  </ResponseMetadata>
+</GetAttributesResponse>

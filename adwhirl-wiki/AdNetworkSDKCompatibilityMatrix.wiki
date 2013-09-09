@@ -1,0 +1,28 @@
+#summary Ad Network SDK Compatibility Matrix
+
+The following are ad network SDK versions that are tested to work with the latest version of AdWhirl SDKs.
+
+= Android =
+
+||             || *Ad Network SDK Versions* ||
+||!AdMob       || 20100527-ANDROID-3312276cc1406347 ||
+||Millennial   || 3.5.0 ||
+||Quattro      || 2.1 ||
+
+= iPhone =
+
+This table lists the ad network SDK versions that are tested to compile *and* work properly (display and clicks) when compiled with the iPhone SDK versions. As per Apple's published best practices, you should compile with the latest iPhone SDK when possible and set deployment target to the lowest version that you support. You may have to compile with a lower version of iPhone SDK if the ad networks you use do not currently support the latest iPhone SDK.
+
+||                         || *iPhone SDK 3.X* || *iPhone SDK 4.0* ||
+||!AdMob           || 20100602 || 20100908 ||
+||Google !AdSense   || 2.7 || 3.1 ||
+||Greystripe       || N/A || 3.0.3 ||
+||iAd                   || N/A || built-in ||
+||inMobi (legacy)|| 1.2.1 || N/A ||
+||Jumptap          || iphone1.0.3_3.0 || 2.0.12.4 (7/13/2010) ||
+||MdotM             || as code || as code ||
+||Millennial        || 20100402 || 4.0.3 (9/20/10) ||
+||Mobclix (legacy)|| N/A || N/A ||
+||Quattro           || 3.1.0 || N/A (use iAd)||
+||!VideoEgg       || 1.0.4 || 1.1 ||
+||!ZestAdz          || N/A || 1.2.0 ||

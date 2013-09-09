@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DomainMetadataResponse xmlns="http://sdb.amazonaws.com/doc/2009-04-15/">
+  <DomainMetadataResult>
+    <ItemCount>string</ItemCount>
+    <ItemNamesSizeBytes>string</ItemNamesSizeBytes>
+    <AttributeNameCount>string</AttributeNameCount>
+    <AttributeNamesSizeBytes>string</AttributeNamesSizeBytes>
+    <AttributeValueCount>string</AttributeValueCount>
+    <AttributeValuesSizeBytes>string</AttributeValuesSizeBytes>
+    <Timestamp>string</Timestamp>
+  </DomainMetadataResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+    <BoxUsage>string</BoxUsage>
+  </ResponseMetadata>
+</DomainMetadataResponse>

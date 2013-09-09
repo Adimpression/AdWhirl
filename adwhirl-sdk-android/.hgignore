@@ -1,0 +1,16 @@
+# DO NOT COMMIT ANY AD NETWORK LIBRARIES TO GOOGLE CODE.
+syntax: glob
+
+# Emacs temp files.
+\#*
+*~
+
+# Mac BS.
+.DS_Store
+**/.DS_Store
+
+# Libraries.
+libs/*
+
+# Compiled classes.
+bin/*

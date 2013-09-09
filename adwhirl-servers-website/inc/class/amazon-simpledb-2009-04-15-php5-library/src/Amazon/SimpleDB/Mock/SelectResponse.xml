@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SelectResponse xmlns="http://sdb.amazonaws.com/doc/2009-04-15/">
+  <SelectResult>
+    <!--Zero or more repetitions:-->
+    <Item>
+      <Name>string</Name>
+      <!--Zero or more repetitions:-->
+      <Attribute>
+        <Name>string</Name>
+        <!--Optional:-->
+        <Value>string</Value>
+      </Attribute>
+    </Item>
+    <!--Optional:-->
+    <NextToken>string</NextToken>
+  </SelectResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+    <BoxUsage>string</BoxUsage>
+  </ResponseMetadata>
+</SelectResponse>
